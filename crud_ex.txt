@@ -1,0 +1,172 @@
+
+test> use library
+switched to db library
+library> db.createCollection("books")
+{ ok: 1 }
+library> db.books.insert({title:"The Great Gatsby",author:"F.Scottt Fitzgerald",published_year:1925})
+DeprecationWarning: Collection.insert() is deprecated. Use insertOne, insertMany, or bulkWrite.
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId('66ddb6e51b86b8495916c9b5') }
+}
+library> db.books.insert({title:"the end with us",author:"Scottt",published_year:1925})
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId('66ddb74a1b86b8495916c9b6') }
+}
+library> db.books.insert({title:"the nightingale",author:"ken",published_year:1900})
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId('66ddb7931b86b8495916c9b7') }
+}
+library> db.books.find()
+[
+  {
+    _id: ObjectId('66ddb6e51b86b8495916c9b5'),
+    title: 'The Great Gatsby',
+    author: 'F.Scottt Fitzgerald',
+    published_year: 1925
+  },
+  {
+    _id: ObjectId('66ddb74a1b86b8495916c9b6'),
+    title: 'the end with us',
+    author: 'Scottt',
+    published_year: 1925
+  },
+  {
+    _id: ObjectId('66ddb7931b86b8495916c9b7'),
+    title: 'the nightingale',
+    author: 'ken',
+    published_year: 1900
+  }
+]
+
+library> db.books.find({author:"ken"})
+[
+  {
+    _id: ObjectId('66ddb7931b86b8495916c9b7'),
+    title: 'the nightingale',
+    author: 'ken',
+    published_year: 1900
+  }
+]
+library> db.books.find().sort({published_year:1}).limit(1)
+[
+  {
+    _id: ObjectId('66ddb7931b86b8495916c9b7'),
+    title: 'the nightingale',
+    author: 'ken',
+    published_year: 1900
+  }
+]
+
+
+
+library> db.books.update({title:"the great gatsby"},{$set:{published_at:2020}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 0,
+  modifiedCount: 0,
+  upsertedCount: 0
+}
+library> db.books.find()
+[
+  {
+    _id: ObjectId('66ddb6e51b86b8495916c9b5'),
+    title: 'The Great Gatsby',
+    author: 'F.Scottt Fitzgerald',
+    published_year: 1925
+  },
+  {
+    _id: ObjectId('66ddb74a1b86b8495916c9b6'),
+    title: 'the end with us',
+    author: 'Scottt',
+    published_year: 1925
+  },
+  {
+    _id: ObjectId('66ddb7931b86b8495916c9b7'),
+    title: 'the nightingale',
+    author: 'ken',
+    published_year: 1900
+  }
+]
+
+
+
+
+library> db.books.update({title:"The Great Gatsby"},{$set:{published_at:2024}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+library> db.books.find()
+[
+  {
+    _id: ObjectId('66ddb6e51b86b8495916c9b5'),
+    title: 'The Great Gatsby',
+    author: 'F.Scottt Fitzgerald',
+    published_year: 1925,
+    published_at: 2024
+  },
+  {
+    _id: ObjectId('66ddb74a1b86b8495916c9b6'),
+    title: 'the end with us',
+    author: 'Scottt',
+    published_year: 1925
+  },
+  {
+    _id: ObjectId('66ddb7931b86b8495916c9b7'),
+    title: 'the nightingale',
+    author: 'ken',
+    published_year: 1900
+  }
+]
+
+library> db.books.find()
+[ upsertedCount: 0
+  {
+    _id: ObjectId('66ddb6e51b86b8495916c9b5'),
+    title: 'The Great Gatsby',
+    author: 'F.Scottt Fitzgerald',
+    published_year: 1925,
+    published_at: 2024,
+    genre: 'mysetry'
+  },
+  {
+    _id: ObjectId('66ddb74a1b86b8495916c9b6'),
+    title: 'the end with us',
+    author: 'Scottt',
+    published_year: 1925,
+    genre: 'mysetry'
+  },
+  {
+    _id: ObjectId('66ddb7931b86b8495916c9b7'),
+    title: 'the nightingale',
+    author: 'ken',
+    published_year: 1900,
+    genre: 'mysetry'
+  }
+]
+library> db.books.deleteOne({published_year:1925})
+{ acknowledged: true, deletedCount: 1 }
+library> db.books.find()
+[
+  {
+    _id: ObjectId('66ddb74a1b86b8495916c9b6'),
+    title: 'the end with us',
+    author: 'Scottt',
+    published_year: 1925,
+    genre: 'mysetry'
+  },
+  {
+    _id: ObjectId('66ddb7931b86b8495916c9b7'),
+    title: 'the nightingale',
+    author: 'ken',
+    published_year: 1900,
+    genre: 'mysetry'
+  }
+]
